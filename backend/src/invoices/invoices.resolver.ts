@@ -1,6 +1,11 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+} from '@nestjs/graphql';
 import { Observable } from 'rxjs';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { UpdateResult } from 'typeorm';
 import { CreateInvoiceInput } from './dto/input/create-invoice.dto';
 import { DeleteInvoiceInput } from './dto/input/delete-invoice.dto';
 import { UpdateInvoiceInput } from './dto/input/update-invoice.dto';
@@ -10,20 +15,22 @@ import { GetInvoiceArgs } from './dto/args/get-invoice.dto';
 
 @Resolver(() => InvoiceEntity)
 export class InvoiceResolver {
-  constructor(private readonly invoiceService: InvoiceService) {}
-
-  @Query(() => [InvoiceEntity])
-  getAllInvoice(
-    @Args('getInvoice') getInvoiceData: GetInvoiceArgs,
-  ): Observable<InvoiceEntity[]> {
-    return this.invoiceService.getAllInvoice();
-  }
+  constructor(
+    private readonly invoiceService: InvoiceService,
+  ) {}
 
   @Query(() => InvoiceEntity)
   getInvoice(
     @Args('getInvoice') getInvoiceData: GetInvoiceArgs,
   ): Observable<InvoiceEntity> {
     return this.invoiceService.getInvoice(getInvoiceData);
+  }
+
+  @Query(() => [InvoiceEntity])
+  getAllInvoice(
+    @Args('getInvoice') getInvoiceData: GetInvoiceArgs,
+  ): Observable<InvoiceEntity[]> {
+    return this.invoiceService.getAllInvoice();
   }
 
   @Mutation(() => InvoiceEntity)

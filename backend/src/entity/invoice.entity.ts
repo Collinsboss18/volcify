@@ -1,6 +1,13 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export type Item = {
+  name: string;
+  quantity: number;
+  price: number;
+  total: number;
+};
+
 @ObjectType()
 @Entity()
 export class InvoiceEntity {

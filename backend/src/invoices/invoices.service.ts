@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
-import { DeleteResult, Not, IsNull, Repository, UpdateResult } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateInvoiceInput } from './dto/input/create-invoice.dto';
 import { DeleteInvoiceInput } from './dto/input/delete-invoice.dto';
@@ -38,9 +38,6 @@ export class InvoiceService {
     // if (updateInvoiceData?.items.length > 0)
     //   items = JSON.stringify(updateInvoiceData.items);
     // else items = invoice.items;
-
-    console.log(updateInvoiceData, 'updateInvoiceData');
-
     return from(
       this.invoiceRepository.update(updateInvoiceData.id, {
         ...updateInvoiceData,

@@ -1,10 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsEmail,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class CreateInvoiceInput {
