@@ -1,9 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Args,
-  Mutation,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 import { UpdateResult } from 'typeorm';
 import { CreateInvoiceInput } from './dto/input/create-invoice.dto';
@@ -15,9 +10,7 @@ import { GetInvoiceArgs } from './dto/args/get-invoice.dto';
 
 @Resolver(() => InvoiceEntity)
 export class InvoiceResolver {
-  constructor(
-    private readonly invoiceService: InvoiceService,
-  ) {}
+  constructor(private readonly invoiceService: InvoiceService) {}
 
   @Query(() => InvoiceEntity)
   getInvoice(
@@ -27,9 +20,7 @@ export class InvoiceResolver {
   }
 
   @Query(() => [InvoiceEntity])
-  getAllInvoice(
-    @Args('getInvoice') getInvoiceData: GetInvoiceArgs,
-  ): Observable<InvoiceEntity[]> {
+  getAllInvoice(): Observable<InvoiceEntity[]> {
     return this.invoiceService.getAllInvoice();
   }
 

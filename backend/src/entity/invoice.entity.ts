@@ -57,7 +57,15 @@ export class InvoiceEntity {
 
   @Field()
   @Column({ default: '' })
+  from_email: string;
+
+  @Field()
+  @Column({ default: '' })
   terms: string;
+
+  @Field()
+  @Column({ default: '' })
+  status: string;
 
   @Field()
   @Column({ default: '' })

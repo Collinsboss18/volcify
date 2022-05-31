@@ -31,13 +31,6 @@ export class InvoiceService {
   public async updateInvoice(
     updateInvoiceData: UpdateInvoiceInput,
   ): Promise<Observable<UpdateResult>> {
-    // const invoice = await this.invoiceRepository.findOne({
-    //   id: updateInvoiceData.id,
-    // });
-    // let items = invoice.items;
-    // if (updateInvoiceData?.items.length > 0)
-    //   items = JSON.stringify(updateInvoiceData.items);
-    // else items = invoice.items;
     return from(
       this.invoiceRepository.update(updateInvoiceData.id, {
         ...updateInvoiceData,
@@ -46,7 +39,10 @@ export class InvoiceService {
   }
 
   public getAllInvoice(): Observable<InvoiceEntity[]> {
-    return from(this.invoiceRepository.find());
+    return from(
+      this.invoiceRepository.find(),
+    );
+    // status:  getInvoice.status
   }
 
   public getInvoice(getInvoiceData: GetInvoiceArgs): Observable<InvoiceEntity> {
@@ -56,8 +52,10 @@ export class InvoiceService {
   public deleteInvoice(
     deleteInvoiceData: DeleteInvoiceInput,
   ): Observable<InvoiceEntity> {
-      const invoice = this.invoiceRepository.findOneOrFail({ id: deleteInvoiceData.id });
-      this.invoiceRepository.delete(deleteInvoiceData.id)
-      return from(invoice);
+    const invoice = this.invoiceRepository.findOneOrFail({
+      id: deleteInvoiceData.id,
+    });
+    this.invoiceRepository.delete(deleteInvoiceData.id);
+    return from(invoice);
   }
 }

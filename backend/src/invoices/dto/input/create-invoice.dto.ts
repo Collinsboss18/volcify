@@ -38,6 +38,10 @@ export class CreateInvoiceInput {
 
   @Field()
   @IsNotEmpty()
+  from_email: string;
+
+  @Field()
+  @IsNotEmpty()
   from_postCode: string;
 
   @Field()
@@ -55,6 +59,10 @@ export class CreateInvoiceInput {
   @Field()
   @IsNotEmpty()
   description: string;
+
+  @Field()
+  @IsNotEmpty()
+  status: string;
 
   @Field()
   @IsNotEmpty()
