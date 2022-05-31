@@ -5,9 +5,24 @@ import React from "react";
 export type LayoutCrumbTypes = {
 	page: string;
 	total: number;
+	setCreateModal: React.Dispatch<any>;
 };
 
-function LayoutCrumb({ page, total }: LayoutCrumbTypes) {
+function LayoutCrumb({ page, total, setCreateModal }: LayoutCrumbTypes) {
+	// const addInvoice = (e: React.FormEvent<HTMLFormElement>) => {
+	// 	e.preventDefault();
+	// 	createInvoice({
+	// 		variables: {
+	// 			...invoice,
+	// 			items: JSON.stringify([{ name: "Charles", quantity: 2, price: 50, total: 100 }]),
+	// 			status: "pending",
+	// 		},
+	// 	});
+	// 	if (error) console.log(error);
+	// };
+
+	const onSubmit = () => {};
+
 	return (
 		<div className="flex justify-between pb-8 px-5">
 			<div className="flex flex-col justify-between">
@@ -15,27 +30,33 @@ function LayoutCrumb({ page, total }: LayoutCrumbTypes) {
 				<p className="text-gray-200 text-sm sm:text-base">There are {total} total invoices</p>
 			</div>
 			<div className="flex place-items-center">
-				<div className="pr-4">
-					<select id="filter" className="hidden md:block text-white pr-1 bg-purple-dark focus:outline-none cursor-pointer">
-						<option value="volvo">
-							<div className="flex">
-								<span className="">Filter by status</span>
-								<FontAwesomeIcon icon={faChevronDown} className={"text-purple-light pr-4"} />
-							</div>
-						</option>
-						<option value="saab">Saab</option>
-					</select>
-					<select id="filter" className="block md:hidden text-white pr-1 bg-purple-dark focus:outline-none cursor-pointer">
-						<option value="volvo">
-							<div className="flex">
-								<span className="">Filter</span>
-								<FontAwesomeIcon icon={faChevronDown} className={"text-purple-light pr-4"} />
-							</div>
-						</option>
-						<option value="saab">Saab</option>
-					</select>
-				</div>
-				<button className="bg-purple-light hover:bg-white duration-150 rounded-full flex place-items-center px-1 py-0 md:py-2 text-white hover:text-purple-light">
+				<form onSubmit={onSubmit}>
+					<div className="pr-4">
+						<select id="filter" className="hidden md:block text-white pr-1 bg-purple-dark focus:outline-none cursor-pointer">
+							<option value="volvo">
+								<div className="flex">
+									<span className="">Filter by status</span>
+									<FontAwesomeIcon icon={faChevronDown} className={"text-purple-light pr-4"} />
+								</div>
+							</option>
+							<option value="pending">Pending</option>
+							<option value="paid">Paid</option>
+							<option value="draft">Draft</option>
+						</select>
+						<select id="filter" className="block md:hidden text-white pr-1 bg-purple-dark focus:outline-none cursor-pointer">
+							<option value="volvo">
+								<div className="flex">
+									<span className="">Filter</span>
+									<FontAwesomeIcon icon={faChevronDown} className={"text-purple-light pr-4"} />
+								</div>
+							</option>
+							<option value="pending">Pending</option>
+							<option value="paid">Paid</option>
+							<option value="draft">Draft</option>
+						</select>
+					</div>
+				</form>
+				<button onClick={() => setCreateModal(true)} className="bg-purple-light hover:bg-white duration-150 rounded-full flex place-items-center px-1 py-0 md:py-2 text-white hover:text-purple-light">
 					<div className="h-7 md:h-10 w-7 md:w-10 rounded-full bg-white text-purple-light grid place-items-center">
 						<FontAwesomeIcon icon={faPlus} className={"text-2xl"} />
 					</div>

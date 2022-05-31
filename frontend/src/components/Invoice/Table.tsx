@@ -1,7 +1,7 @@
 import React from "react";
 import TableItem from "./TableItem";
 
-function Table() {
+function Table({ items }: { items: any[] }) {
 	return (
 		<div className="overflow-x-auto">
 			<table className="table-auto w-full">
@@ -25,7 +25,9 @@ function Table() {
 					</tr>
 				</thead>
 				<tbody className="text-sm">
-					<TableItem/>
+					{items.map((e, i) => (
+						<TableItem item={e} key={i} id={i+1} />
+					))}
 				</tbody>
 			</table>
 		</div>
