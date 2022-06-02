@@ -19,6 +19,31 @@ export const CreateInvoiceMutation = gql`
 			date
 			description
 			items
+			status
+		}
+	}
+`;
+
+export const DeleteInvoiceMutation = gql`
+	mutation ($id: String!) {
+		deleteInvoice(deleteInvoiceData: { id: $id }) {
+			id
+			to_name
+			to_email
+			to_address
+			to_city
+			to_postCode
+			to_country
+			from_address
+			from_city
+			from_email
+			from_postCode
+			from_country
+			terms
+			date
+			description
+			items
+			status
 		}
 	}
 `;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { v4 as uuid } from "uuid";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { slideInLeft } from "react-animations";
 import styled, { keyframes } from "styled-components";
-import { v4 as uuid } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import { useMutation } from "@apollo/client";
@@ -23,7 +23,7 @@ const initialState: { to_name: string; to_email: string; to_address: string; to_
 	terms: "",
 	date: "",
 	description: "",
-	items: [],
+	items: [{ id: uuid(), name: "", quantity: 0, price: 0 }],
 	status: "",
 };
 const SlideInLeft = styled.div`
@@ -32,30 +32,50 @@ const SlideInLeft = styled.div`
 
 export type Type = {
 	setCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setInvoices: React.Dispatch<React.SetStateAction<any>>;
 };
 
-function CreateInvoice({ setCreateModal }: Type) {
+function CreateInvoice({ setCreateModal, setInvoices }: Type) {
 	const [createInvoice, { error }] = useMutation(CreateInvoiceMutation);
 	const [invoice, setInvoice] = useState(initialState);
 
-	const addInvoice = (e: React.FormEvent<HTMLFormElement>) => {
+	const addInvoice = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		createInvoice({
-			variables: {
-				...invoice,
-				items: JSON.stringify(invoice.items),
-				status: "pending",
-			},
-		});
-		setCreateModal(false);
-		if (!error) {
-			toast.success("Successfully Created Invoice!", {
+		try {
+			if (!requireFields()) return;
+			const result = await createInvoice({
+				variables: {
+					...invoice,
+					items: JSON.stringify(invoice.items),
+					status: "pending",
+				},
+			});
+			setCreateModal(false);
+			setInvoices((prev: any) => {
+				return [...prev, { ...result.data?.createInvoice, items: JSON.parse(result.data?.createInvoice?.items) }];
+			});
+			if (!error) {
+				toast.success("Successfully Created Invoice!", {
+					position: toast.POSITION.TOP_RIGHT,
+				});
+			} else {
+				toast.warning("An error occur! Try later", {
+					position: toast.POSITION.TOP_RIGHT,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const requireFields = (): Boolean => {
+		if (!invoice.to_address || !invoice.to_city || !invoice.to_country || !invoice.to_email || !invoice.to_name || !invoice.to_postCode || !invoice.from_address || !invoice.from_city || !invoice.from_country || !invoice.from_email || !invoice.from_postCode || !invoice.date || !invoice.description || !invoice.items) {
+			toast.warning("Ensure all fields are filled", {
 				position: toast.POSITION.TOP_RIGHT,
 			});
+			return false;
 		} else {
-			toast.warning("An error occur! Try later", {
-				position: toast.POSITION.TOP_RIGHT,
-			});
+			return true;
 		}
 	};
 

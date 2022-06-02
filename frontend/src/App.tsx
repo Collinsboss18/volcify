@@ -16,8 +16,7 @@ const errorLink = onError(({ graphqlErrors, networkError }: any) => {
 		});
 	}
 });
-
-const link = from([errorLink, new HttpLink({ uri: "http://localhost:3000/graphql" })]);
+const link = from([errorLink, new HttpLink({ uri: "https://volcify.herokuapp.com/graphql" })]);
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	link: link,

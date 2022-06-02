@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 import Layout from "../components/Layouts/Layout";
 import LayoutCrumb from "../components/Layouts/LayoutCrumb";
 import MobileDisplay from "../components/List/MobileDisplay";
@@ -7,10 +7,8 @@ import WindowDisplay from "../components/List/WindowDisplay";
 import { GetAllInvoice } from "../graphql/Query";
 import CreateInvoice from "../components/Modal/CreateInvoice";
 
-const items = [{ status: "paid" }, { status: "paid" }, { status: "pending" }, { status: "draft" }];
-
 function Index() {
-	const { error, loading, data } = useQuery(GetAllInvoice);
+	const { loading, data } = useQuery(GetAllInvoice);
 	const [invoices, setInvoices] = useState([]);
 	const [createModal, setCreateModal] = useState(false);
 
@@ -27,7 +25,7 @@ function Index() {
 	return (
 		<Layout>
 			<div className="relative overflow-y-auto h-full">
-				{createModal && <CreateInvoice setCreateModal={setCreateModal} />}
+				{createModal && <CreateInvoice setCreateModal={setCreateModal} setInvoices={setInvoices} />}
 				<div className="max-w-7xl mx-auto pt-16">
 					<LayoutCrumb page="Invoices" total={7} setCreateModal={setCreateModal} />
 					<div className="px-5">

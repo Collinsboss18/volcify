@@ -1,10 +1,9 @@
-import * as qs from "query-string";
 import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Table from "../components/Invoice/Table";
 import Layout from "../components/Layouts/Layout";
 import { GetInvoiceById } from "../graphql/Query";
+import DeleteInvoice from "../components/Modal/DeleteInvoice";
 
 const initialState = {
 	date: "",
@@ -27,30 +26,36 @@ const initialState = {
 
 function Invoice() {
 	const [invoice, setInvoice] = useState(initialState);
+	const [deleteModal, setDeleteModel] = useState(false);
 	const [items, setItems] = useState([]);
 	const { loading, error, data } = useQuery(GetInvoiceById, {
 		variables: { id: window.location.pathname.split("/")[1] },
 	});
+	const [id, setId] = useState("");
 
 	useEffect(() => {
 		if (!loading) {
 			setInvoice(data?.getInvoice);
 			setItems(JSON.parse(data?.getInvoice.items));
+			setId(data?.getInvoice?.id.split("-")[data?.getInvoice?.id.split("-").length - 1]);
 		}
 	}, [data]);
 
 	return (
 		<Layout>
 			<div className="relative overflow-y-auto h-full">
+				{deleteModal && <DeleteInvoice id={id} setDeleteModel={setDeleteModel} invoiceId={invoice.id} />}
 				<div className="max-w-7xl mx-auto pt-16 px-5">
 					<div className="w-full bg-purple-mid flex flex-col sm:flex-row justify-between px-4 md:px-8 py-5 rounded-md mb-8">
 						<h2 className="text-xl md:text-2xl text-gray-50 mb-3">
 							<span className="text-gray-400">#</span>
-							{invoice?.id.split("-")[invoice?.id.split("-").length - 1]}
+							{id}
 						</h2>
 						<div className="flex text-gray-50 max-w-sm w-full items-center justify-center">
 							<button className="rounded-full focus:outline-none bg-purple-dark hover:bg-slate-100 hover:text-purple-mid duration-150 text px-3 sm:px-5 py-2 sm:py-3 font-medium mr-3">Edit</button>
-							<button className="rounded-full focus:outline-none bg-red-500 hover:bg-slate-100 hover:text-red-500 duration-150 text px-2 sm:px-5 py-2 sm:py-3 font-medium mr-3">Delete</button>
+							<button onClick={() => setDeleteModel(true)} className="rounded-full focus:outline-none bg-red-500 hover:bg-slate-100 hover:text-red-500 duration-150 text px-2 sm:px-5 py-2 sm:py-3 font-medium mr-3">
+								Delete
+							</button>
 							<button className="rounded-full block w-full focus:outline-none bg-purple-light hover:bg-slate-100 hover:text-purple-light duration-150 text px-2 sm:px-3 py-2 sm:py-3 font-medium">Save Changes</button>
 						</div>
 					</div>
